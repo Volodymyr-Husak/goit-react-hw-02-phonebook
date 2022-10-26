@@ -1,7 +1,7 @@
 import { Component } from 'react';
-import { nanoid } from 'nanoid';
-import { PhoneBook } from './PhoneBook/PhoneBook';
-import { Contacts } from '../components/Contacts/Contacts';
+// import { nanoid } from 'nanoid';
+import { ContactForm } from './ContactForm/ContactForm';
+// import { Contacts } from '../components/Contacts/Contacts';
 import { Section } from './Section/Section';
 
 import { ContactList } from './Contacts/ContactList';
@@ -15,8 +15,8 @@ export class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: '',
+    // name: '',
+    // number: '',
   };
 
   handleOnInputChange = e => {
@@ -28,24 +28,47 @@ export class App extends Component {
     }
   };
 
-  handleOnSubmit = e => {
-    e.preventDefault();
-
-    const nameInput = e.currentTarget.name;
-    this.setState({ [nameInput]: e.target.value });
-
+  addToContacts = (name, number, id) => {
     this.setState(prevState => {
       return {
         contacts: [
           ...prevState.contacts,
-          { name: this.state.name, number: this.state.number, id: nanoid() },
+          { name: name, number: number, id: id },
         ],
       };
     });
-
-    e.currentTarget.name.value = '';
-    e.currentTarget.number.value = '';
   };
+  deleteContact = (e) => {
+    // console.log(e.currentTarget.id)
+    const currentId = e.currentTarget.id;
+    const newArrContacts = this.state.contacts.filter(({ id }) =>
+      currentId !== id
+    )
+    // console.log(newArrContacts)    
+    this.setState({ contacts: newArrContacts });
+  }
+  // checkPresenceContact = () => {
+  //   this.setState({ alert: !this.state.alert });
+  //   return this.state.alert;
+  // }
+  // handleOnSubmit = e => {
+  //   e.preventDefault();
+
+  //   const nameInput = e.currentTarget.name;
+  //   this.setState({ [nameInput]: e.target.value });
+
+  //   this.setState(prevState => {
+  //     return {
+  //       contacts: [
+  //         ...prevState.contacts,
+  //         { name: this.state.name, number: this.state.number, id: nanoid() },
+  //       ],
+  //     };
+  //   });
+
+  //   e.currentTarget.name.value = '';
+  //   e.currentTarget.number.value = '';
+  // };
 
   filterContacts = () => {
     const contactsArr = this.state.contacts;
@@ -53,13 +76,17 @@ export class App extends Component {
     const contactsFindArr = contactsArr.filter(({ name }) => {
       const nameContact = name.toLowerCase();
       const nameFilter = this.state.filter.toLowerCase();
-
-      return nameContact.includes(nameFilter);
+      // const nameFilter = e.target.value.toLowerCase();
+      // return nameContact.includes(nameFilter);
+      // if (nameContact.includes(nameFilter)) {
+        
+        // console.log('contactsFindArr', contactsFindArr);
+        return nameContact.includes(nameFilter);
+      // }
     });
 
-    console.log('contactsFindArr', contactsFindArr);
-    return contactsFindArr;
-
+    // console.log('contactsFindArr', contactsFindArr);
+    return contactsFindArr; 
   };
 
   render() {
@@ -76,20 +103,22 @@ export class App extends Component {
         }}
       >
         <Section title="Phonebook">
-          <PhoneBook
-            onSubmitProps={this.handleOnSubmit}
+          <ContactForm
             onChangeProps={this.handleOnInputChange}
-          ></PhoneBook>
-         
+            addToContactsProps={this.addToContacts}
+            items={this.state.contacts}
+            checkPresenceContact={this.checkPresenceContact}
+          />
         </Section>
 
         <Section title="Contacts">
-          <ContactList onChangeProps={this.handleOnInputChange}>
-            <Contacts
-              items={this.state.contacts}
-              findItem={this.filterContacts()}
-            ></Contacts>
-          </ContactList>
+          <ContactList
+            onChangeProps={this.handleOnInputChange}
+            items={this.state.contacts}
+            filter={this.state.filter}
+            findItems={this.filterContacts()}
+            deleteContactProps={this.deleteContact}
+          />
         </Section>
       </div>
     );

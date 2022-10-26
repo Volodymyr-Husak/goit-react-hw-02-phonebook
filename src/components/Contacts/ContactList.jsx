@@ -1,4 +1,5 @@
-export const ContactList = ({ onChangeProps, children }) => {
+import { Contacts } from './Contacts';
+export const ContactList = ({ deleteContactProps, onChangeProps, items, findItems }) => {
   return (
     <div>
       <label>
@@ -13,7 +14,13 @@ export const ContactList = ({ onChangeProps, children }) => {
           onChange={onChangeProps}
         />
       </label>
-      <ul>{children}</ul>
+      <ul>
+        <Contacts items={items} findItems={findItems}
+          deleteContactProps={ deleteContactProps } />
+      </ul>
     </div>
   );
 };
+// import { Contacts } from './Contacts';
+// import { Component } from 'react';
+
