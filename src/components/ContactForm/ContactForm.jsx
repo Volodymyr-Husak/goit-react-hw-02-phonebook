@@ -24,6 +24,7 @@ export class ContactForm extends Component {
         presenceContact = true;
         return alert(`${name} is already in contacts`);
       }
+      return null;
     });
 
     if (!presenceContact) {
