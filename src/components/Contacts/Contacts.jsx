@@ -1,10 +1,12 @@
-export const Contacts = ({ items, findItems, deleteContactProps }) => {
+import css from './Contacts.module.css'
+import propTypes from 'prop-types';
+export const Contacts = ({ findItems, deleteContactProps }) => {
   // if (findItems.length > 0) {
   console.log()
     return findItems.map(({ name, number, id, }) => (
-      <li key={id}>
-        {name}: {number}
-        <button onClick={deleteContactProps} id={id}>Видалити</button>
+      <li className={css.contact_item} key={id}>
+        <span>&#10032; {name}: {number}</span>
+        <button className={css.btn} onClick={deleteContactProps} id={id}>Видалити</button>
       </li>
     ));
   // }
@@ -18,4 +20,9 @@ export const Contacts = ({ items, findItems, deleteContactProps }) => {
   //     {/* <button>Видалити</button> */}
   //   </li>
   // ));
+};
+
+Contacts.propTypes = {
+  findItems: propTypes.array.isRequired,
+  deleteContactProps: propTypes.func.isRequired,
 };
