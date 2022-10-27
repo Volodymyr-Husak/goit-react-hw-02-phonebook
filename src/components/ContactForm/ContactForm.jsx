@@ -23,8 +23,9 @@ export class ContactForm extends Component {
         e.currentTarget.number.value = '';
         presenceContact = true;
         return alert(`${name} is already in contacts`);
-      }
-      return null;
+      } else {
+        return null;
+      }      
     });
 
     if (!presenceContact) {
